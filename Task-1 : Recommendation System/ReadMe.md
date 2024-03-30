@@ -45,7 +45,7 @@ python app.py
 
 ## Data Sources
 
-- [Movie Dataset]([ink-to-movie-dataset](https://files.grouplens.org/datasets/movielens/ml-10m.zip)): You can download the dataset from given link in zip file.
+- [Movie Dataset](https://files.grouplens.org/datasets/movielens/ml-10m.zip): You can download the dataset from given link in zip file.
 
 ## Credits
 
