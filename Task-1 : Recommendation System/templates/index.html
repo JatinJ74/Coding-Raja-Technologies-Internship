@@ -1,0 +1,104 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+<!--    body {-->
+<!--        font-family: Arial, sans-serif;-->
+<!--        margin: 0;-->
+<!--        padding: 0;-->
+<!--        height: 100vh; /* Sets the height of the body to 100% of the viewport height */-->
+<!--        display: flex; /* Enables flexbox layout */-->
+<!--        justify-content: center; /* Horizontally centers content */-->
+<!--        align-items: center; /* Vertically centers content */-->
+<!--    }-->
+
+    #autocomplete-results {
+        text-align: center; /* Aligns text content to the center */
+        margin-top: 5px; /* Adds 20px margin from the top */
+    }
+    .header {
+        text-align: center;
+        margin-top: 50px; /* Adds 50px margin from the top */
+        margin-bottom: 50px; /* Adds 50px margin from the bottom */
+    }
+
+    .form-container {
+        text-align: center;
+        border: 1px solid #ccc; /* Adds a border around the form container */
+        padding: 20px; /* Adds 20px padding inside the form container */
+        border-radius: 5px; /* Adds rounded corners to the form container */
+    }
+
+    .form-container form {
+        display: flex; /* Enables flexbox layout for form elements */
+        flex-direction: column; /* Arranges form elements vertically */
+        align-items: center; /* Horizontally centers form elements */
+    }
+
+    .form-container label {
+        margin-bottom: 10px; /* Adds 10px margin below each label */
+    }
+
+    .form-container input, .form-container button {
+        margin-bottom: 10px; /* Adds 10px margin below each input and button */
+        padding: 5px; /* Adds 5px padding to input and button elements */
+    }
+</style>
+
+</head>
+<body>
+    <div class="header">
+    <h2>Looking for some options because life ain't offering any? Well, we've got you covered with movie recommendations!</h2>
+    </div>
+    <div class = "form-container">
+        <form action="/recommendations" method="POST">
+        <label for="movie_title">Enter a movie title:</label>
+        <input type="text" id="movie_title" name="movie_title" autocomplete="off">
+        <button type="submit">Get Recommendations</button>
+    </form>
+    </div>
+    <div id="autocomplete-results"></div>
+
+   <script>
+    $(document).ready(function() {
+        $('#movie_title').on('input', function() {
+            var partialTitle = $(this).val();
+            $.ajax({
+                url: '/autocomplete',
+                method: 'GET',
+                data: { partial_title: partialTitle },
+                success: function(response) {
+                    var suggestions = response.suggestions;
+                    var resultsDiv = $('#autocomplete-results');
+                    resultsDiv.empty();
+                    if (suggestions.length > 0) {
+                        var ul = $('<ul>');
+                        for (var i = 0; i < Math.min(suggestions.length, 10); i++) {
+                            var listItem = $('<li>').text(suggestions[i]);
+                            listItem.on('click', function() {
+                                $('#movie_title').val($(this).text());
+                                resultsDiv.empty();
+                            });
+                            ul.append(listItem);
+                        }
+                        resultsDiv.append(ul);
+                    } else {
+                        resultsDiv.append('<p>No suggestions found</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
