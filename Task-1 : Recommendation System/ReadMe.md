@@ -1,4 +1,3 @@
-```markdown
 # Movie Recommendation System
 
 This is a movie recommendation system project that provides personalized movie recommendations based on user input. It utilizes a content-based recommendation approach, where movies are recommended based on their similarity to the input movie.
